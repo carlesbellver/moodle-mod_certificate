@@ -205,3 +205,11 @@ $string['viewcertificateviews'] = 'View {$a} issued certificates';
 $string['viewed'] = 'You received this certificate on:';
 $string['viewtranscript'] = 'View Certificates';
 $string['watermark'] = 'Watermark';
+
+$string['typeUJI_certificate'] = 'Certificado UJI';
+$string['disclaimer'] = 'THIS ONLINE COURSE IS NOT PART OF A FORMAL EDUCATION PROGRAMME OF THE UNIVERSITAT JAUME I AND DOES NOT LEAD TO AN OFFICIAL DEGREE. THIS CERTIFICATE DOES NOT PROVE THAT ITS HOLDER IS A STUDENT OF THIS INSTITUTION AND HAS BEEN ISSUED WITHOUT VERIFYING THE IDENTITY OF THE HOLDER.';
+$string['coursetaughtby'] = 'Course taught by';
+$string['and'] = 'and';
+$string['verificationcode'] = 'Verification code';
+$string['syllabus'] = 'Syllabus';
+$string['syllabus_help'] = 'This text will be printed on a second page. Markdown format accepted.';
