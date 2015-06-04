@@ -31,30 +31,30 @@ $pdf->AddPage();
 // Portrait
     $x = 20;
     $y = 50;
-    $sealx = 163; # 210 - 20(margin) - 25(width) = 165
+    //$sealx = 163; # 210 - 20(margin) - 25(width) = 165
+    $sealx = 92.5; # (210 - 25(width)) / 2 = 92,25
     $sealy = 20;
     $sigx = 20;
-    $sigy = 180;
+    $sigy = 170;
     $dsclx = 20;
     $dscly = 250;
     $codey = 275;
 
-// Add seal and signature
 $pdf->SetAlpha(1);
+
+// Add seal
 certificate_print_image($pdf, $certificate, CERT_IMAGE_SEAL, $sealx, $sealy, 25, 25);
-certificate_print_image($pdf, $certificate, CERT_IMAGE_SIGNATURE, $sigx, $sigy, 70, 30);
 
 // Add text
 $pdf->SetTextColor(105, 105, 105);
 $pdf->setHtmlLinksStyle(array(105, 105, 105), '');
-certificate_print_text($pdf, $x, $y, 'R', 'freeserif', '', 12, certificate_get_date($certificate, $certrecord, $course));
-certificate_print_text($pdf, $x, $y + 30, 'L', 'freeserif', '', 20, get_string('title', 'certificate'));
+certificate_print_text($pdf, $x, $y + 20, 'L', 'freeserif', '', 20, get_string('title', 'certificate'));
 $pdf->SetTextColor(46, 91, 125);
-certificate_print_text($pdf, $x, $y + 60, 'L', 'freesans', '', 18, mb_strtoupper(($testname ? $testname : fullname($USER)), 'UTF-8'));
+certificate_print_text($pdf, $x, $y + 50, 'L', 'freesans', '', 18, mb_strtoupper(($testname ? $testname : fullname($USER)), 'UTF-8'));
 $pdf->SetTextColor(105, 105, 105);
-certificate_print_text($pdf, $x, $y + 75, 'L', 'freeserif', '', 12, get_string('statement', 'certificate'));
+certificate_print_text($pdf, $x, $y + 65, 'L', 'freeserif', '', 12, get_string('statement', 'certificate'));
 $pdf->SetTextColor(46, 91, 125);
-certificate_print_text($pdf, $x, $y + 85, 'L', 'freesans', '', 15, $course->fullname);
+certificate_print_text($pdf, $x, $y + 75, 'L', 'freesans', '', 15, $course->fullname);
 $pdf->SetTextColor(105, 105, 105);
 // Course info: teachers' list + hours
 $courseinfo = '';
@@ -75,28 +75,33 @@ if ($certificate->printhours) {
     $courseinfo .= ($courseinfo ? "<br>" : '') . get_string('credithours', 'certificate', $certificate->printhours);
 }
 if ($courseinfo) {
-    certificate_print_text($pdf, $x, $y + 97, 'L', 'freeserif', '', 12, $courseinfo);
+    certificate_print_text($pdf, $x, $y + 87, 'L', 'freeserif', '', 12, $courseinfo);
 }
 // code
 certificate_print_text($pdf, $x, $codey, 'R', 'freeserif', '', 9, get_string('verificationcode', 'certificate').': '.certificate_get_code($certificate, $certrecord));
 certificate_print_text($pdf, $x, $codey, 'L', 'freeserif', '', 9, '<a href="http://mooc.uji.es/">http://mooc.uji.es</a>');
 $pdf->SetTextColor(105, 105, 105);
 // Custom text: signature
-$namesy = $sigy + 30;
+$custom = '';
 if ($certificate->customtext) {
     $lines = explode("\n", $certificate->customtext);
     $custom = join("<br>", $lines);
-    certificate_print_text($pdf, $sigx, $namesy, 'L', 'freeserif', '', 12, $custom);
 }
+$sigtext = "Castelló de la Plana, ".certificate_get_date($certificate, $certrecord, $course);
+if ($custom) $sigtext = $custom.'<br>'.$sigtext;
+certificate_print_text($pdf, $sigx, $sigy + 30, 'L', 'freeserif', '', 12, $sigtext);
+// Add signature
+certificate_print_image($pdf, $certificate, CERT_IMAGE_SIGNATURE, $sigx, $sigy, 70, 30);
+
 //disclaimer
 certificate_print_text($pdf, $dsclx, $dscly, 'J', 'freeserif', '', 9, get_string('disclaimer', 'certificate'));
 
 //syllabus
 if ($certificate->syllabus) {
 	$pdf->AddPage();
-    certificate_print_text($pdf, $x, $y+10, 'L', 'freeserif', '', 12, '<b>'.$course->fullname.'</b>');
+    certificate_print_text($pdf, $x, 30, 'L', 'freeserif', '', 14, '<b>'.$course->fullname.'</b>');
 	$syllabus = markdown_to_html($certificate->syllabus);
-	certificate_print_text($pdf, $x, $y+20, 'L', 'freeserif', '', 12, $syllabus);
+	certificate_print_text($pdf, $x, 50, 'L', 'freeserif', '', 12, $syllabus);
 }
 
 ?>
