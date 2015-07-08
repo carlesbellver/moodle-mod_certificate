@@ -48,7 +48,7 @@ certificate_print_image($pdf, $certificate, CERT_IMAGE_SEAL, $sealx, $sealy, 25,
 // Add text
 $pdf->SetTextColor(105, 105, 105);
 $pdf->setHtmlLinksStyle(array(105, 105, 105), '');
-certificate_print_text($pdf, $x, $y + 20, 'L', 'freeserif', '', 20, get_string('title', 'certificate'));
+certificate_print_text($pdf, $x, $y + 20, 'C', 'freeserif', '', 20, get_string('title', 'certificate'));
 $pdf->SetTextColor(46, 91, 125);
 certificate_print_text($pdf, $x, $y + 50, 'L', 'freesans', '', 18, mb_strtoupper(($testname ? $testname : fullname($USER)), 'UTF-8'));
 $pdf->SetTextColor(105, 105, 105);
