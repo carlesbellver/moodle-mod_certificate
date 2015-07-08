@@ -492,7 +492,13 @@ function xmldb_certificate_upgrade($oldversion=0) {
 
         $field = new xmldb_field('printseal', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, 0, '0');
         $dbman->change_field_default($table, $field);
-
+        
+        // New syllabus field
+        $syllabusfield = new xmldb_field('syllabus', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'customtext');
+        if (!$dbman->field_exists($table, $syllabusfield)) {
+	        $dbman->add_field($table, $syllabusfield);
+        }
+        
         // Certificate savepoint reached.
         upgrade_mod_savepoint(true, 2014081901, 'certificate');
     }
